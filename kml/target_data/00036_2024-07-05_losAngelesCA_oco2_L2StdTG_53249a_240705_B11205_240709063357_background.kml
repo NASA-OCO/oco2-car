@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="https://www.opengis.net/kml/2.2" xmlns:gx="https://www.google.com/kml/ext/2.2" xmlns:kml="https://www.opengis.net/kml/2.2" xmlns:atom="https://www.w3.org/2005/Atom">
+<GroundOverlay>
+	<name>MODIS_Aqua_CorrectedReflectance_TrueColor</name>
+	<Icon>
+		<href>00036_2024-07-05_losAngelesCA_oco2_L2StdTG_53249a_240705_B11205_240709063357_background.tiff</href>
+		<viewBoundScale>0.75</viewBoundScale>
+	</Icon>
+	<LatLonBox>
+		<north>34.814000</north>
+		<south>32.814000</south>
+		<east>-117.280000</east>
+		<west>-119.280000</west>
+	</LatLonBox>
+</GroundOverlay>
+</kml>

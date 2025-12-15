@@ -1,0 +1,50 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: Orbiting Carbon Observatory 3 (OCO-2) Command Access Request (CAR) System 
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Brian
+    family-names: Knosp
+    email: Brian.Knosp@jpl.nasa.gov
+    affiliation: Jet Propulsion Laboratory
+    orcid: 'https://orcid.org/0000-0002-2266-8883'
+  - given-names: Faria
+    family-names: Chowdhury
+    email: faria@ipac.caltech.edu
+    affiliation: California Institute of Technology
+  - given-names: Joshua
+    family-names: Laughner
+    email: josh.laughner@jpl.nasa.gov
+    affiliation: Jet Propulsion Laboratory
+    orcid: 'https://orcid.org/0000-0002-8599-4555'    
+  - given-names: Bret
+    family-names: Naylor
+    email: Bret.J.Naylor@jpl.nasa.gov
+    affiliation: Jet Propulsion Laboratory
+  - given-names: Gregory
+    family-names: Osterman
+    email: Gregory.B.Osterman@jpl.nasa.gov
+    affiliation: Jet Propulsion Laboratory
+    orcid: 'https://orcid.org/0000-0002-6339-7434'
+  - given-names: Debra
+    family-names: Wunch
+    email: dwunch@caltech.edu
+    affiliation: California Institute of Technology
+    orcid: 'https://orcid.org/0000-0002-4924-0377'     
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.17809021
+    description: DOI of v2.1 of the software
+repository-code: 'https://github.com/NASA-OCO2/oco2-car'
+abstract: "The OCO-2 CAR tool was designed to plan upcoming observational targets and evaluate the success of those observations."
+keywords:
+  - OCO-2
+  - Orbiting Carbon Observatory 2
+license: Apache-2.0
+version: v2.0
+date-released: '2025-11-2025'

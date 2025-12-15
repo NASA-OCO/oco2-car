@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>TOF E-Mail Notice | CAR Website</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    % include(menuFile)
+    <!-- keep everything in a fixed width container -->
+    <div class="container">
+        <div class="main-wrapper">
+            <br />
+            <h2>TOF E-Mail Notices</h2>
+            <br />
+            <br />
+            <form action="/tofs/email/send" method="POST">
+                <input type="radio" name="emailType" id="debug" value="debug" tabindex="1" CHECKED>
+                <label for="debug">debug ON (email sent to OCO_DEBUG_LIST = ['test@mail.com'] only)</label>
+                <br />
+                <input type="radio" name="emailType" id="send" value="send" tabindex="2">
+                <label for="send">debug OFF (email sent to actual recipients)</label>
+                <br />
+                <input type="hidden" value="{{tofID}}" name="tofID">
+                <input type="submit" alt="submit" title="Send E-Mail" value="Send E-Mail" tabindex="3">
+            </form>
+            <br />
+            <br />
+            <table>
+                %for thisSite in sites:
+                <tr style="border: 2px; border-style: solid;">
+                    <td style="padding:10px;">
+                        <b>Actual recipients for {{thisSite['name']}} (site's emails):</b><br />
+                        <ul style="list-style: circle; margin-left:40px;">
+                            <li>{{thisSite['emailRecipients']}}</li>
+                        </ul>
+                        <br />
+                        <b>Email Subject:</b> Target List: {{thisSite['name']}} {{dateRange[0]['minGCdate']}} to
+                        {{dateRange[0]['maxGCdate']}} UTC<br />
+                        <br />
+                        Dear Team,<br /><br />
+                        Your validation site is included in the list of potential targets for the following
+                        period, from {{dateRange[0]['minGCdate']}} UTC to {{dateRange[0]['maxGCdate']}} UTC. The dates
+                        and times under consideration for your site are:<br /><br />
+                        <ul style="list-style: circle; margin-left:40px;">
+                            %for thisRow in row:
+                            %if thisRow['name'] == thisSite['name']:
+                            <li>{{thisRow['name']}} {{thisRow['targetTimeLocal']}} {{thisRow['timezone']}}
+                                ({{thisRow['targetTimeUTC']}} UTC)</li>
+                            %end
+                            %end
+                        </ul>
+                        <br />
+                        Please notify us if your site should not be targeted for any of these opportunities.<br /><br />
+                        Selections will be made by 5 PM Pacific Time before a scheduled target and you will be notified
+                        at that time if your site has been selected.<br /><br />
+                        The Team thanks you, in advance, for your participation! Questions or concerns
+                        can be directed to <a href="mailto:contact@mail.com">Contact Person</a>.<br /><br />
+                        Thank you,<br /><br />
+                        The Team<br /><br />
+                        %end
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    % include(footerFile)
+</body>
+
+</html>

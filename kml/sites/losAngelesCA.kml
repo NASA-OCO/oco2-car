@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2">
+    <Document id="feat_79">
+        <Style id="stylesel_56">
+            <LabelStyle id="substyle_56">
+                <color>ff0000ff</color>
+                <colorMode>normal</colorMode>
+                <scale>2</scale>
+            </LabelStyle>
+        </Style>
+        <name>losAngelesCA</name>
+        <Placemark id="feat_80">
+            <name>losAngelesCA Target</name>
+            <Camera>
+                <longitude>-118.275308</longitude>
+                <latitude>33.8142049</latitude>
+                <altitude>2000000</altitude>
+                <tilt>0</tilt>
+                <altitudeMode>relativeToGround</altitudeMode>
+                <roll>0</roll>
+            </Camera>
+            <styleUrl>#stylesel_56</styleUrl>
+            <Point id="geom_56">
+                <coordinates>-118.275308,33.8142049,14.0</coordinates>
+            </Point>
+        </Placemark>
+    </Document>
+</kml>

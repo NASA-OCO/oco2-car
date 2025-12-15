@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Path Viewer | {{site}} Path #{{path}}</title>
+    <!-- Include the CesiumJS JavaScript and CSS files -->
+    <script src="https://cesium.com/downloads/cesiumjs/releases/1.98/Build/Cesium/Cesium.js"></script>
+    <link href="https://cesium.com/downloads/cesiumjs/releases/1.98/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+</head>
+
+<body>
+    <div id="cesiumContainer"></div>
+    <script>
+        // Enter your toke here; may have to go to the Cesium website to get one
+        Cesium.Ion.defaultAccessToken = '';
+
+        const viewer = new Cesium.Viewer('cesiumContainer', {
+            sceneMode: Cesium.SceneMode.SCENE3D,
+            animation: false,
+            baseLayerPicker: true,
+            fullscreenButton: true,
+            geocoder: false,
+            homeButton: true,
+            infoBox: false,
+            sceneModePicker: true,
+            selectionIndicator: true,
+            timeline: false,
+            navigationHelpButton: true,
+            navigationInstructionsInitiallyVisible: true
+        });
+
+        viewer.scene.camera.setView({
+            destination: Cesium.Cartesian3.fromDegrees({{xCoord}}, {{yCoord}}, 3000000),
+            orientation: {
+                heading: 0.0,
+                pitch: -Cesium.Math.PI_OVER_TWO,
+                roll: 0.0
+            }
+        });
+
+        var options = {
+            camera: viewer.scene.camera,
+            canvas: viewer.scene.canvas
+        };
+
+        viewer.dataSources.add(Cesium.KmlDataSource.load(
+            '{{siteKML}}',
+            options
+        ));
+
+        viewer.dataSources.add(Cesium.KmlDataSource.load(
+            '{{pathKML}}',
+            options
+        ));
+
+    </script>
+    </div>
+</body>
+
+</html>

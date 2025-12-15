@@ -1,0 +1,3 @@
+# This is an example TOF file, showing the fields the database requires
+# It should include things like target name, date and time, path, orbit, and
+# and any other information pertinent to the observation.

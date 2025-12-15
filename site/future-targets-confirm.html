@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Future Targets | CAR Website</title>
+    <link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.js" type="text/javascript"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" type="text/javascript"></script>
+</head>
+
+<body>
+    % include(menuFile)
+    <!-- keep everything in a fixed width container -->
+    <div class="container">
+        <div class="main-wrapper">
+            <br />
+            <h2>Future Targets</h2>
+            <br />
+            <br />
+            The following changes will be made:
+            <br />
+            <br />
+            <table style='width:50%'>
+                <tr>
+                    <th>Orbit #</th>
+                    <th>Path #</th>
+                    <th>Original Target</th>
+                    <th>Selected Target</th>
+                </tr>
+                % for key, value in info.items():
+                % if value['original'] != value['selected']:
+                <tr>
+                    <td>{{key}}</td>
+                    <td>{{value['path']}}</td>
+                    <td>{{value['original']}}</td>
+                    <td>{{value['selected']}}</td>
+                </tr>
+                %end
+                %end
+            </table>
+            <br />
+            <br />
+            <form action="/future-targets/email" method="POST">
+                <input type="radio" name="emailType" id="debug" value="debug" tabindex="1" CHECKED>
+                <label for="debug">debug ON (email sent to OCO_DEBUG_LIST = ['test@mail.com'] only)</label>
+                <br />
+                <input type="radio" name="emailType" id="send" value="send" tabindex="2">
+                <label for="send">debug OFF (email sent to actual recipients)</label>
+                <br />
+                <input type="hidden" value="{{odfID}}" name="odfID" />
+                <input type="hidden" value="{{info}}" name="info" />
+                <br />
+                <br />
+                Submit the form if you want to confirm the above changes and send e-mail to your selected distribution
+                list.
+                <br />
+                <br />
+                <input type="submit" alt="submit" title="Send E-Mail" value="Send E-Mail" tabindex="3">
+            </form>
+            <br />
+            <br />
+        </div>
+    </div>
+    % include(footerFile)
+</body>
+
+</html>

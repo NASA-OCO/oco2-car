@@ -1,0 +1,12 @@
+{
+  "dbuser": "",
+  "dbpass": "",
+  "dbhost": "",
+  "dbname": "",
+  "webhost": "",
+  "webport": 8080,
+  "ldap_server": "",
+  "base_dn": "",
+  "search_filter": "",
+  "search_field": ""
+}

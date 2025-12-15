@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Notes |CAR Website</title>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.js" type="text/javascript"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <script type='text/javascript'>
+        function reject_form() {
+            return false;
+        }
+
+        function accept_form() {
+            return true;
+        }
+
+        function val_form(frm) {
+            if (frm.note.value == "") {
+                alert("Note is a required field.");
+                frm.note.focus();
+                return reject_form();
+            }
+            if (frm.startDate.value == "") {
+                alert("Start Date is a required field.");
+                frm.startDate.focus();
+                return reject_form();
+            }
+            if (frm.endDate.value == "") {
+                alert("End Date is a required field.");
+                frm.endDate.focus();
+                return reject_form();
+            }
+            return accept_form();
+        }
+    </script>
+    <script>
+        $(function () {
+            $("#startDate").datepicker({ dateFormat: "yy-mm-dd" });
+        });
+    </script>
+    <script>
+        $(function () {
+            $("#endDate").datepicker({ dateFormat: "yy-mm-dd" });
+        });
+    </script>
+</head>
+
+<body>
+    % include(menuFile)
+    <!-- keep everything in a fixed width container -->
+    <div class="container">
+        <div class="main-wrapper">
+            <br />
+            <h2>Add a Note</h2>
+            <p>
+                <br />
+                <br />
+            <form action="/notes" method="POST" onsubmit="return val_form(this);">
+                <table class="table table-responsive">
+                    <thead class="thead-light">
+                        <tr>
+                            <th colspan="2">
+                                <h4>Enter information below to add a new note that will appear on the Select Targets
+                                    page.</h4>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong><label for="note">Note</label></strong></td>
+                            <td><textarea id="note" name="note" rows="8" cols="100" tabindex="1"></textarea></td>
+                        </tr>
+                        <tr>                               
+                            <td><strong><label for="startDate">Start Date</label></strong></td>
+                            <td><input type="text" id="startDate" name="startDate" maxlength="10" value=""
+                                   tabindex="2"></td>
+                        </tr>
+                        <tr>
+                            <td><strong><label for="endDate">End Date</label></strong></td>
+                            <td><input type="text" id="endDate" name="endDate" maxlength="10" value=""
+                                    tabindex="3"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><input type='submit' alt='submit' title='Submit' value='Submit Note'
+                                    tabindex='4'></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
+            <br />
+            <br />
+            </p>
+        </div>
+    </div>
+    % include(footerFile)
+</body>
+
+</html>

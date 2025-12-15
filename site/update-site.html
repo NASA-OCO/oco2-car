@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Update a Site | CAR Website</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+	<script type='text/javascript'>
+		function reject_form() {
+			return false;
+		}
+
+		function accept_form() {
+			return true;
+		}
+
+		function val_form(frm) {
+			if (frm.name.value == "") {
+				alert("Name is a required field.");
+				frm.name.focus();
+				return reject_form();
+			}
+			if (frm.siteID.value == "") {
+				alert("Site ID is a required field.");
+				frm.siteID.focus();
+				return reject_form();
+			}
+			if (frm.display.value == "") {
+				alert("Display is a required field.");
+				frm.display.focus();
+				return reject_form();
+			}
+			if (frm.timezone.value == "") {
+				alert("Timezone is a required field.");
+				frm.timezone.focus();
+				return reject_form();
+			}
+			return accept_form();
+		}
+	</script>
+</head>
+
+<body>
+	% include(menuFile)
+	<!-- keep everything in a fixed width container -->
+	<div class="container">
+		<div class="main-wrapper">
+			<br />
+			<h2>Update a Site</h2>
+			<p>
+				<br />
+				<br />
+				%for site in row:
+			<form action="/update-site" method="POST" onsubmit="return val_form(this);">
+				<input type="hidden" name="originalName" value="{{site['name']}}">
+				<table class="table table-responsive">
+					<thead class="thead-light">
+						<tr>
+							<th colspan="2">
+								<h4>Edit any of the information below to update a site.</h4>
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><strong><label for="siteID">Site ID</label></strong></td>
+							%if site['description'] != None:
+							<td><input type="text" id="siteID" name="siteID" maxlength="10" size="100%"
+									value="{{site['siteID']}}" tabindex="1"></td>
+							%else:
+							<td><input type="text" id="siteID" name="siteID" maxlength="10" size="100%" value=""
+									tabindex="1"></td>
+							%end
+						</tr>
+						<tr>
+							<td><strong><label for="name">Name</label></strong></td>
+							<td><input type="text" id="name" name="name" maxlength="100" size="100%"
+									value="{{site['name']}}" tabindex="2"></td>
+						</tr>
+						<tr>
+							<td><strong><label for="tcconName">TCCON Name</label></strong></td>
+							<td>
+								%if site['tcconName'] != None:
+								<input type="text" id="tcconName" name="tcconName" maxlength="250" size="100%"
+									value="{{site['tcconName']}}" tabindex="3">
+								%else:
+								<input type="text" id="tcconName" name="tcconName" maxlength="250" size="100%"
+									value="" tabindex="3">
+								%end
+							</td>
+						</tr>
+						<tr>
+							<td><strong><label for="tcconID">TCCON ID</label></strong></td>
+							<td>
+								%if site['tcconID'] != None:
+								<input type="text" id="tcconID" name="tcconID" maxlength="250" size="100%"
+									value="{{site['tcconID']}}" tabindex="4">
+								%else:
+								<input type="text" id="tcconID" name="tcconID" maxlength="250" size="100%"
+									value="" tabindex="4">
+								%end
+							</td>
+						</tr>
+						<tr>
+							<td><strong><label for="description">Description</label></strong></td>
+							<td>
+								%if site['description'] != None:
+								<input type="text" id="description" name="description" maxlength="250" size="100%"
+									value="{{site['description']}}" tabindex="5">
+								%else:
+								<input type="text" id="description" name="description" maxlength="250" size="100%"
+									value="" tabindex="5">
+								%end
+							</td>
+						</tr>
+						<tr>
+							<td><strong><label for="targetGeo">Coordinates [lon,lat]</label></strong></td>
+							<td>
+								%if site['targetLon'] != None and site['targetLat'] != None:
+								<input type="text" id="targetGeo" name="targetGeo" maxlength="50" size="100%"
+									value="{{site['targetLon']}},{{site['targetLat']}}"
+									placeholder="example: -103.9999, 40.0" tabindex="6">
+								%else:
+								<input type="text" id="targetGeo" name="targetGeo" maxlength="50" size="100%" value=""
+									placeholder="example: -103.9999, 40.0" tabindex="6">
+								%end
+							</td>
+						</tr>
+						<tr>
+							<td><strong><label for="targetAlt">Altitude [km]</label></strong></td>
+							<td>
+								%if site['targetAlt'] != None:
+								<input type="text" id="targetAlt" name="targetAlt" maxlength="50" size="100%"
+									value="{{site['targetAlt']}}" tabindex="7">
+								%else:
+								<input type="text" id="targetAlt" name="targetAlt" maxlength="50" size="100%" value=""
+									tabindex="7">
+								%end
+							</td>
+						</tr>
+						<tr>
+							<td><strong><label for="tcconGeo">TCCON Coordinates [lon, lat]</label></strong></td>
+							<td>
+								%if site['tcconLon'] != None and site['tcconLat'] != None:
+								<input type="text" id="tcconGeo" name="tcconGeo" maxlength="50" size="100%"
+									value="{{site['tcconLon']}},{{site['tcconLat']}}"
+									placeholder="example: -103.9999, 40.0" tabindex="8">
+								%else:
+								<input type="text" id="tcconGeo" name="tcconGeo" maxlength="50" size="100%" value=""
+									placeholder="example: -103.9999, 40.0" tabindex="8">
+								%end
+							</td>
+						</tr>
+						<tr>
+							<td><strong><label for="tcconAlt">TCCON Altitude [km]</label></strong></td>
+							<td>
+								%if site['targetAlt'] != None:
+								<input type="text" id="tcconAlt" name="tcconAlt" maxlength="50" size="100%"
+									value="{{site['tcconAlt']}}" tabindex="9">
+								%else:
+								<input type="text" id="tcconAlt" name="tcconAlt" maxlength="50" size="100%" value=""
+									tabindex="9">
+								%end
+							</td>
+						</tr>
+						<tr>
+							<td><strong><label for="contact">Contact Names</label></strong></td>
+							<td>
+								%if site['contact'] != None:
+								<input type="text" id="contact" name="contact" maxlength="250" size="100%"
+									value="{{site['contact']}}" placeholder="example: Contact Person, et al."
+									tabindex="10">
+								%else:
+								<input type="text" id="contact" name="contact" maxlength="250" size="100%" value=""
+									placeholder="example: Contact Person, et al." tabindex="10">
+								%end
+							</td>
+						</tr>
+						<tr>
+							<td><strong><label for="emailRecipients">Contact E-Mails</label></strong></td>
+							<td>
+								%if site['emailRecipients'] != None:
+								<input type="text" id="emailRecipients" name="emailRecipients" maxlength="250"
+									size="100%" value="{{site['emailRecipients']}}"
+									placeholder="example: contact1@mail.com,contact2@mail.com,contact3@mail.com"
+									tabindex="11">
+								%else:
+								<input type="text" id="emailRecipients" name="emailRecipients" maxlength="250"
+									size="100%" value=""
+									placeholder="example: contact1@mail.com,contact2@mail.com,contact3@mail.com"
+									tabindex="11">
+								%end
+							</td>
+						</tr>
+						<tr>
+							<td><strong><label for="tcconStatusValue">TCCON Status</label></strong></td>
+							<td>
+								%if site['tcconStatusValue'] == 0:
+								<input type="radio" id="tcconStatusValue" tabindex="12" name="tcconStatusValue"
+									value="0" CHECKED> Non-Operational</input><br />
+								%else:
+								<input type="radio" id="tcconStatusValue" tabindex="12" name="tcconStatusValue"
+									value="0"> Non-Operational</input><br />
+								%end
+								% if site['tcconStatusValue'] == 1:
+								<input type="radio" id="tcconStatusValue" tabindex="13" name="tcconStatusValue"
+									value="1" CHECKED> Operational</input><br />
+								% else:
+								<input type="radio" id="tcconStatusValue" tabindex="13" name="tcconStatusValue"
+									value="1"> Operational</input><br />
+								% end
+								% if site['tcconStatusValue'] != 0 and site['tcconStatusValue'] != 1:
+								<input type="radio" id="tcconStatusValue" tabindex="14" name="tcconStatusValue"
+									value="3" CHECKED> No Information</input><br />
+								%else:
+								<input type="radio" id="tcconStatusValue" tabindex="14" name="tcconStatusValue"
+									value="3"> No Information</input><br />
+								%end
+							</td>
+						</tr>
+						<tr>
+							<td><strong><label for="tcconStatusLink">TCCON Wiki Link</label></strong></td>
+							<td>
+								% if site['tcconStatusLink'] != None:
+								<input type="text" id="tcconStatusLink" name="tcconStatusLink" maxlength="250"
+									size="100%" value="{{site['tcconStatusLink']}}" tabindex="15">
+								%else:
+								<input type="text" id="tcconStatusLink" name="tcconStatusLink" maxlength="250"
+									size="100%" value="" tabindex="15">
+								%end
+							</td>
+						</tr>
+						<tr>
+							<td><strong><label for="tcconStatusText">TCCON Status Description</label></strong></td>
+							<td>
+								%if site['tcconStatusText'] != None:
+								<input type="text" id="tcconStatusText" name="tcconStatusText" maxlength="250"
+									size="100%" value="{{site['tcconStatusText']}}" tabindex="16">
+								%else:
+								<input type="text" id="tcconStatusText" name="tcconStatusText" maxlength="250"
+									size="100%" value="" tabindex="16">
+								%end
+							</td>
+						</tr>
+						<tr>
+							<td><strong><label for="timezone">Timezone</label></strong></td>
+							<td>
+								%if site['timezone'] != None:
+								<input type="text" id="timezone" name="timezone" maxlength="250" size="100%"
+									value="{{site['timezone']}}" tabindex="17">
+								%else:
+								<input type="text" id="timezone" name="timezone" maxlength="250" size="100%" value=""
+									tabindex="17">
+								%end
+							</td>
+						</tr>
+						<tr>
+							<td><strong><label for="accuWeatherLink">ACCU Weather Link</label></strong></td>
+							<td>
+								%if site['accuWeatherLink'] != None:
+								<input type="text" id="accuWeatherLink" name="accuWeatherLink" maxlength="250"
+									size="100%" value="{{site['accuWeatherLink']}}" tabindex="18">
+								%else:
+								<input type="text" id="accuWeatherLink" name="accuWeatherLink" maxlength="250"
+									size="100%" value="" tabindex="18"
+									placeholder="https://www.accuweather.com/en/kr/seoul/226081/weather-forecast/226081">
+								%end
+							</td>
+						</tr>
+                        <tr>
+                            <td><strong><label for="accuWeatherLink">WUnderground Weather Link</label></strong></td>
+                            <td>
+                                %if site['wuWeatherLink'] != None:
+                                <input type="text" id="wuWeatherLink" name="wuWeatherLink" maxlength="250"
+                                    size="100%" value="{{site['wuWeatherLink']}}" tabindex="19">
+                                %else:
+                                <input type="text" id="wuWeatherLink" name="wuWeatherLink" maxlength="250"
+                                    size="100%" value="" tabindex="19"
+                                    placeholder="https://www.wunderground.com/weather/jp/saga">
+                                %end
+                            </td>
+                        </tr>
+						<tr>
+							<td><strong><label for="display">Display</label></strong></td>
+							<td>
+								%if site['display'] == 0:
+								<input type="radio" id="display" tabindex="20" name="display" value="0" CHECKED>
+								No</input><br />
+								%else:
+								<input type="radio" id="display" tabindex="20" name="display" value="0">
+								No</input><br />
+								%end
+								%if site['display'] == 1:
+								<input type="radio" id="display" tabindex="21" name="display" value="1" CHECKED>
+								Yes</input><br />
+								%else:
+								<input type="radio" id="display" tabindex="21" name="display" value="1">
+								Yes</input><br />
+								%end
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2"><input type='submit' alt='submit' title='Submit' value='Update Site'
+									tabindex='22'></td>
+						</tr>
+					</tbody>
+				</table>
+			</form>
+			%end
+			<br />
+			<br />
+			</p>
+		</div>
+	</div>
+	% include(footerFile)
+</body>
+
+</html>

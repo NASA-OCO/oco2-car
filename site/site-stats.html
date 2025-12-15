@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Site Selection Stats | CAR Website</title>
+	<link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.3.1.js" type="text/javascript"></script>
+	<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" type="text/javascript"></script>
+	<script type="text/javascript" charset="utf-8">
+		$(document).ready(function () {
+			$('#sites').DataTable({
+				"order": [[0, "asc"]],
+				"pageLength": 100
+			});
+		});
+	</script>
+</head>
+
+<body>
+	% include(menuFile)
+	<!-- keep everything in a fixed width container -->
+	<div class="container">
+		<div class="main-wrapper">
+			<br />
+			<h2>Site Selection Stats</h2>
+			<p>
+				<br />
+				<br />
+			<h4><a href="/api/report/site-stats">+ Download as CSV File</a></h4>
+			<br />
+			<br />
+			<br />
+			<table id="sites" class="display table-responsive">
+				<thead>
+					<tr>
+						<th>
+							<h4>Site</h4>
+						</th>
+						<th>
+							<h4>Target Name</h4>
+						</th>
+						<th>
+							<h4>Number of Selections</h4>
+						</th>
+						<th>
+							<h4>Last Target Time (UTC)</h4>
+						</th>
+						<th>
+							<h4>TCCON Data Return</h4>
+						</th>
+						<th>
+							<h4>OCO-2 Data Return</h4>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					%for site in row:
+					<tr>
+						<td>{{site['description']}}</a></td>
+						<td><a href="sites/{{site['name']}}">{{site['name']}}</a></td>
+						<td>{{site['numSelections']}}</td>
+						<td>{{site['lastTargetTime']}}</td>
+						<td>-</td>
+						<td>-</td>
+					</tr>
+					%end
+				</tbody>
+			</table>
+			<br />
+			<br />
+			</p>
+		</div>
+	</div>
+	% include(footerFile)
+</body>
+
+</html>

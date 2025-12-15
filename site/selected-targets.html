@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Selected Targets | CAR Website</title>
+	<link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.3.1.js" type="text/javascript"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+	<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" type="text/javascript"></script>
+	<script type="text/javascript" charset="utf-8">
+		$(document).ready(function () {
+			$('#selected').DataTable({
+				"order": [[0, "desc"]],
+				"pageLength": 100
+			});
+		});
+	</script>
+    <script>
+        $( function() {
+            $( "#startRange" ).datepicker({ dateFormat: "yy-mm-dd"});
+        } );
+    </script>
+    <script>
+        $( function() {
+            $( "#endRange" ).datepicker({ dateFormat: "yy-mm-dd"});
+        });
+    </script>
+</head>
+
+<body>
+	% include(menuFile)
+	<!-- keep everything in a fixed width container -->
+	<div class="container">
+		<div class="main-wrapper">
+			<br />
+			<h2>Selected Targets</h2>
+			<br />
+			<br />
+			<form action="/selected-targets" method="POST">
+				<table style="border: 2px; border-style: solid;">
+					<tr>
+					<td style=" padding: 10px;"><label for="startRange">Show selected targets from</label></td>
+					<td style=" padding: 10px;"><input type="text" id="startRange" name="startRange" maxlength="10"
+							value="{{startRange}}" tabindex="1"></td>
+					<td style=" padding: 10px;"><label for="endRange">to</label></td>
+					<td style=" padding: 10px;"><input type="text" id="endRange" name="endRange" maxlength="10"
+							value="{{endRange}}" tabindex="2"></td>
+					<td style=" padding: 10px;"><label for="showNoTarget">Display real targets only</label></td>
+					<td style=" padding: 10px;"><input type="checkbox" id="showNoTarget" name="showNoTarget"
+							tabindex="3" {{checked}}></td>
+					<td style=" padding: 10px;"><label for="outputFile">Write Output File</label></td>
+					<td style=" padding: 10px;"><input type="checkbox" id="outputFile" name="outputFile" tabindex="4">
+					</td>
+					<td style=" padding: 10px;"><input type="submit" alt="submit" title="Submit" value="Submit"
+							tabindex="5"></td>
+					</tr>
+				</table>
+			</form>
+			<br />
+			<br />
+			<table id="selected" class="display table-responsive">
+				<thead>
+					<tr>
+						<th>
+							<h4>Ground Contact Time (UTC)</h4>
+						</th>
+						<th>
+							<h4>Target Name</h4>
+						</th>
+						<th>
+							<h4>Orbit</h4>
+						</th>
+						<th>
+							<h4>Path</h4>
+						</th>
+						<th>
+							<h4>Target Time (UTC)</h4>
+						</th>
+						<th>
+							<h4>Select Date</h4>
+						</th>
+						<th>
+							<h4>E-Mail Time (PT)</h4>
+						</th>
+						<th>
+							<h4>TCCON Data Available</h4>
+						</th>
+						<th>
+							<h4>TCCON Data Status</h4>
+						</th>
+						<th>
+							<h4>OCO-2 Data Available</h4>
+						</th>
+						<th>
+							<h4>OCO-2 Data Status</h4>
+						</th>
+						<th>
+							<h4>MODIS Image</h4>
+						</th>
+                        <th>
+                            <h4>VIIRS Image</h4>
+                        </th>
+						<th>
+							<h4>Aeronet Data</h4>
+						</th>
+						<th>
+							<h4>Selected By</h4>
+						</th>
+					</tr>
+				</thead>
+				<tbody class="table-hover">
+					%for info in row:
+					<tr>
+						<td>{{info['groundContactTime']}}</a></td>
+						<td><a href="/sites/{{info['name']}}">{{info['name']}}</a></td>
+                        %if info['obsMode'] == 'Nadir':
+                        <td style="background: #D8BFD8;"><a href="{{info['orbitURL']}}">{{info['orbit']}}</a></td>
+                        %elif info['obsMode'] == 'Glint':
+                        <td style="background: #87CEFA;"><a href="{{info['orbitURL']}}">{{info['orbit']}}</a></td>
+                        %else:
+                        <td><a href="{{info['orbitURL']}}">{{info['orbit']}}</a></td>
+                        %end
+                        %if info['obsMode'] == 'Nadir':
+                        <td style="background: #D8BFD8;">{{info['path']}}</td>
+                        %elif info['obsMode'] == 'Glint':
+                        <td style="background: #87CEFA;">{{info['path']}}</td>
+                        %else:
+                        <td>{{info['path']}}</td>
+                        %end
+						<td>{{info['targetTimeUTC']}}</td>
+                        %if info['carFile'] != None:
+                        <td><a href="{{info['carFile']}}">{{info['selectDate']}}</a></td>
+                        %else:
+						<td>{{info['selectDate']}}</a></td>
+                        %end
+						<td><a href="/car/email/{{info['selectionID']}}">{{info['emailTime']}}</a></td>
+                        %if info['tcconDataAvailable'] == 0:
+						<td class="table-danger">No</td>
+                        %else:
+                        <td class="table-success">Yes</td>
+                        %end
+						<td>{{info['tcconDataStatus']}}</td>
+                        %if info['ocoDataAvailable'] == 0:
+                        <td class="table-danger">No</td>
+                        %else:
+                        <td class="table-success">Yes</td>
+                        %end
+						<td>{{info['ocoDataStatus']}}</td>
+						<td>
+							%if info['modisThumbnail'] != None:
+							<a href="/images/modis/{{info['modisImage']}}"><img
+									src="/images/modis/{{info['modisThumbnail']}}" /></a>
+							%else:
+							No image
+							%end
+						</td>
+                        <td>
+                            %if info['viirsThumbnail'] != None:
+                            <a href="/images/viirs/{{info['viirsImage']}}"><img
+                                src="/images/viirs/{{info['viirsThumbnail']}}" /></a>
+                            %else:
+                            No image
+                            %end
+                        </td>
+						<td>{{info['aeronetData']}}</td>
+						<td>{{info['selectedBy']}}</td>
+					</tr>
+					%end
+				</tbody>
+			</table>
+			<br />
+			<br />
+            <hr />
+            <h2>Additional Information</h2>
+            <br />
+            <br />
+            <table class="table">
+                <thead class="thead-light">
+                    <tr>
+                        <th colspan="2">
+                            <h4>Observation Mode Information</h4>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="background: #D8BFD8;">Nadir</td>
+                        <td style="background: #87CEFA;">Glint</td>
+                    </tr>
+                </tbody>
+            </table>
+            <br />
+            <br />
+            <table class="table">
+               <thead class="thead-light">
+                   <tr>
+                         <th colspan="2">
+                             <h4>Data Availability</h4>
+                         </th>
+                   </tr>
+               </thead>
+               <tbody>
+                  <tr>
+                        <td class="table-danger">No Data Available</td>
+                        <td class="table-success">Data Available</td>
+                  </tr>
+               </tbody>
+            </table>
+			</p>
+		</div>
+	</div>
+	% include(footerFile)
+</body>
+
+</html>

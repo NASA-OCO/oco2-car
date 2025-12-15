@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Select Target | CAR Website</title>
+	<link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.3.1.js" type="text/javascript"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+	<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" type="text/javascript"></script>
+	<script type="text/javascript" charset="utf-8">
+		$(document).ready(function () {
+			$('table.display').DataTable({
+				"order": [[0, "desc"]],
+				"pageLength": 25,
+				"searching": false,
+				"paging": false,
+				"info": false
+			});
+		});
+	</script>
+    <script>
+        $( function() {
+            $( "#selectDate" ).datepicker({ dateFormat: "yy-mm-dd"});
+        });
+    </script>
+</head>
+<body>
+	% include(menuFile)
+	<!-- keep everything in a fixed width container -->
+	<div class="container">
+		<div class="main-wrapper">
+			<br />
+			<h2>Select Target</h2>
+			<br />
+			<br />
+            % if noteInfo != None:
+            <div class="alert alert-dismissible alert-info">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    % for note in noteInfo:
+                        <li>{{note['note']}}</li>
+                    % end
+            </div>
+            %end
+            <br><br>
+			<form action="/select-target" method="POST">
+				<table style="border: 2px; border-style: solid;">
+					<tr>
+						<td style=" padding: 10px;"><label for="selectDate">Selecting a new date will update the target
+								opportunities:</label></td>
+						<td style=" padding: 10px;"><input type="text" id="selectDate" name="selectDate" maxlength="10"
+								value="{{searchDate}}" tabindex="1" placeholder="YYYY-MM-DD"></td>
+						<td style=" padding: 10px;"><input type="hidden" name="actionType" value="updateDate"><input
+								type='submit' alt='submit' title='Submit' value='Submit' tabindex='2'></td>
+					</tr>
+				</table>
+			</form>
+			<br />
+			<br />
+			% if alreadySelected:
+			<h3>Target(s) already selected for Ground Contact Date {{searchDate}}</h3>
+			<table id="" class="display table-responsive">
+				<thead>
+					<tr>
+						<th>
+							<h4>Ground Contact Time (UTC)</h4>
+						</th>
+						<th>
+							<h4>Target Name</h4>
+						</th>
+						<th>
+							<h4>Target Time (UTC)</h4>
+						</th>
+						<th>
+							<h4>Target Time (Local)</h4>
+						</th>
+						<th>
+							<h4>Select Time (PT)</h4>
+						</th>
+						<th>
+							<h4>E-Mail Time (PT)</h4>
+						</th>
+						<th>
+							<h4>Selected By</h4>
+						</th>
+						<th>
+							<h4>Deselect Target</h4>
+						</th>
+					</tr>
+				</thead>
+				<tbody class="table-hover">
+					%for row in alreadySelected:
+					<tr>
+						<td>{{row['gcDateTime']}}</td>
+						<td>{{row['name']}}</td>
+						<td>{{row['targetTimeUTC']}}</td>
+						<td>{{row['targetTimeLocal']}}</td>
+   						<td><a href="{{row['carFile']}}" target="_blank">{{row['selectDate']}}</a></td>
+                        %if row['emailTime'] == None:
+                            <td><a href="/car/email/{{row['selectionID']}}">{{row['emailTime']}}</a></td>
+                        %else:
+    						<td>{{row['emailTime']}}</td>
+                        %end
+						<td>{{row['selectedBy']}}</td>
+						<td><a href="select-target/deselect/{{row['selectionID']}}">Deselect Target</a></td>
+					</tr>
+					%end
+				</tbody>
+			</table>
+			<br />
+			<br />
+			<br />
+			<br />
+			%end
+			%if alreadySelected:
+			<h3>Select Additional Target for Ground Target Date {{searchDate}}</h3>
+			%else:
+			<h3>Select a Target for Ground Target Date {{searchDate}}</h3>
+			%end
+			<form action="/select-target/confirm" method="POST">
+				<table id="" class="display table-responsive">
+					<thead>
+						<tr>
+							<th>
+							</th>
+							<th>
+								<h4>Site</h4>
+							</th>
+							<th>
+								<h4>Target Time (UTC)</h4>
+							</th>
+							<th>
+								<h4>Target Time (Local)</h4>
+							</th>
+							<th>
+								<h4>Min Glint Angle (&deg;)</h4>
+							</th>
+							<th>
+								<h4>Obs. Time (mm:ss)</h4>
+							</th>
+                            <th>
+                                <h4>Path</h4>
+                            </th>
+							<th>
+								<h4># of Selections</h4>
+							</th>
+							<th>
+								<h4>Last Target Time (UTC)</h4>
+							</th>
+							<th>
+								<h4>SZA @ 1330</h4>
+							</th>
+							<th>
+								<h4>TCCON Status</h4>
+							</th>
+							<th>
+								<h4>Status Update Date</h4>
+							</th>
+						</tr>
+					</thead>
+					<tbody class="table-hover">
+						%for row in info:
+                        %if row['name'] != 'noTarget':
+						<tr>
+							<td><input type="radio" name="selectionID" value="{{row['selectionID']}}"></td>
+							<td><a href='sites/{{row['name']}}'>{{row['name']}}</a></td>
+							<td>{{row['targetTimeUTC']}}</td>
+							<td>{{row['targetTimeLocal']}}</td>
+                            %if row['obsMode'] == 'Nadir':
+                                %if row['minGlintAngle'] < 2.5:
+                                    <td class="table-danger">{{row['minGlintAngle']}}</td>
+                                %else:
+           							<td style="background: #D8BFD8;">{{row['minGlintAngle']}}</td>
+                                %end
+	    						<td style="background: #D8BFD8;">{{row['obsTime']}}</td>
+                            %elif row['obsMode'] == 'Glint':
+                                %if row['minGlintAngle'] < 2.5:
+                                    <td class="table-danger">{{row['minGlintAngle']}}</td>
+                                %else:
+                                    <td style="background: #87CEFA;">{{row['minGlintAngle']}}</td>
+                                %end
+                                <td style="background: #87CEFA;">{{row['obsTime']}}</td>
+                            %else:
+                                <td>{{row['minGlintAngle']}}</td>
+                                <td>{{row['obsTime']}}</td>
+                            %end
+                            <td>{{row['path']}}</td>
+							<td>{{row['numOfSelections']}}</td>
+							<td>{{row['lastSelection']}}</td>
+							<td>{{row['sza']}}</td>
+                            %if row['tcconStatusValue'] == 0:
+                             <td class="table-danger">
+                                 %if row['tcconStatusLink']:
+                                <a href="{{row['tcconStatusLink']}}">{{row['tcconStatusText']}}</a>
+                                %else:
+                                {{row['tcconStatusText']}}
+                                %end
+                            </td>
+                            %elif row['tcconStatusValue'] == 1:
+                            <td class="table-success">
+                                %if row['tcconStatusLink']:
+                                <a href="{{row['tcconStatusLink']}}">{{row['tcconStatusText']}}</a>
+                                %else:
+                                {{row['tcconStatusText']}}
+                                %end
+                            </td>
+                            %else:
+                            <td class="table-warning">
+                                %if row['tcconStatusLink']:
+                                <a href="{{row['tcconStatusLink']}}">{{row['tcconStatusText']}}</a>
+                                %else:
+                                {{row['tcconStatusText']}}
+                                %end
+                            </td>
+                            %end
+							<td>n/a</td>
+						</tr>
+                        %end
+						%end
+						<tr>
+							<td colspan="12">
+								<input type="radio" name="selectionID" value="noTarget"> Select No Target
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<br />
+                <input type="hidden" name="passGCID" value="{{passGCID}}">
+				<input type='submit' alt='submit' title='Submit' value='Submit'>
+			</form>
+			<br />
+			<br />
+			<ul>
+				<li style=" list-style-type: circle; list-style-position: inside;">SZA is the Solar Zenith Angle in
+					degrees calculated at 1330 hrs for the site's targettime and
+					coordinates</li>
+				<li style=" list-style-type: circle; list-style-position: inside;">Operational status is parsed from <a
+						href="https://parkfalls.gps.caltech.edu/car/opstat/car">https://parkfalls.gps.caltech.edu/car/opstat/car</a>
+				</li>
+			</ul>
+            <br />
+            <br />
+            <hr />
+            <h2>Additional Information</h2>
+            <br />
+            <br />
+            <table class="table">
+                <thead class="thead-light">
+                    <tr>
+                        <th colspan="3">
+                            <h4>Site Status Colors</h4>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="table-danger">Non-Operational</td>
+                        <td class="table-success">Operational</td>
+                        <td class="table-warning">No Info</td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table">
+                <thead class="thead-light">
+                    <tr>
+                        <th colspan="2">
+                            <h4>Observation Mode Information</h4>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="background: #D8BFD8;">Nadir</td>
+                        <td style="background: #87CEFA;">Glint</td>
+                    </tr>
+                </tbody>
+            </table>
+            <br />
+            <br />
+            <hr />
+            <br />
+            <br />
+            <h2>Recent Path Modes</h2>
+            <img src="plots/mode_usage.png">
+            <br />
+            <br />
+            <hr />
+            <br />
+            <br />
+            <h2>Recent Path Usage</h2>
+            <img src="plots/path_usage.png">
+            <br />
+            <br />
+            <hr />
+            <h2>Site Selection Stats</h2>
+            <br />
+            <br />
+            <table width="100%">
+                <thead>
+                    <tr>
+                        <th>
+                            <h4>Site</h4>
+                        </th>
+                        <th>
+                            <h4>Target Name</h4>
+                        </th>
+                        <th>
+                            <h4>Number of Selections</h4>
+                        </th>
+                        <th>
+                            <h4>Last Target Time (UTC)</h4>
+                        </th>
+                        <th>
+                            <h4>TCCON Data Return</h4>
+                        </th>
+                        <th>
+                            <h4>OCO-2 Data Return</h4>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    %for site in siteInfo:
+                    <tr>
+                        <td>{{site['description']}}</a></td>
+                        <td><a href="sites/{{site['name']}}">{{site['name']}}</a></td>
+                        <td>{{site['numSelections']}}</td>
+                        <td>{{site['lastTargetTime']}}</td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
+                    %end
+                </tbody>
+            </table>
+            <br />
+            <br />
+			</p>
+		</div>
+	</div>
+	% include(footerFile)
+</body>
+
+</html>

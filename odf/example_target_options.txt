@@ -1,0 +1,2 @@
+# This is an example file, showing fields required by the database
+# You would want have this file specify an orbit, path, target, and other information

@@ -1,0 +1,3 @@
+# This is an example switched targets file that shows the differences 
+# between teh target_options file and what the user changed on the
+# Future Targets page on the CAR site.
