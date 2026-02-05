@@ -40,7 +40,7 @@ identifiers:
   - type: doi
     value: 10.5281/zenodo.17809021
     description: DOI of v2.1 of the software
-repository-code: 'https://github.com/NASA-OCO2/oco2-car'
+repository-code: 'https://github.com/NASA-OCO/oco2-car'
 abstract: "The OCO-2 CAR tool was designed to plan upcoming observational targets and evaluate the success of those observations."
 keywords:
   - OCO-2
